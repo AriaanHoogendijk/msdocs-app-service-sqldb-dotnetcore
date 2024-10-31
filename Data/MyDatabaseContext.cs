@@ -13,7 +13,13 @@ namespace DotNetCoreSqlDb.Data
             : base(options)
         {
         }
+        public virtual DbSet<FieldLabel> FieldLabels { get; set; }
 
         public DbSet<DotNetCoreSqlDb.Models.Todo> Todo { get; set; } = default!;
+        public virtual DbSet<Area> Areas { get; set; }
+        public virtual DbSet<AreaView> AreaViews { get; set; }
+        public virtual DbSet<TypeOfAreaView> TypeOfAreaViews { get; set; }
+        public virtual DbSet<TypeOfArea> TypeOfAreas { get; set; }
+
     }
 }

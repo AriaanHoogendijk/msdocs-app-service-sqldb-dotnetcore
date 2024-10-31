@@ -1,0 +1,262 @@
+@using DotNetCoreSqlDb.Data
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@inject MyDatabaseContext db //Hier moet de naam van de database context gebruikt worden, in dit geval Archive gevolgd door Context. Nog niet gelukt dit dynamisch te maken
+
+@model IEnumerable<DotNetCoreSqlDb.Models.AreaView>
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    var fieldLabels = db.FieldLabels.ToList();
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div class="pagination-container">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item @(ViewBag.CurrentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { pageNumber = ViewBag.CurrentPage - 1 })" aria-label="Vorige">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Vorige</span>
+                </a>
+            </li>
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { pageNumber = i })">@i</a>
+                </li>
+            }
+            <li class="page-item @(ViewBag.CurrentPage == ViewBag.TotalPages ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { pageNumber = ViewBag.CurrentPage + 1 })" aria-label="Volgende">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Volgende</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+@using (Html.BeginForm("Index", (string)ViewBag.SetName, FormMethod.Get))
+{
+<div class="form-group">
+    <div class="input-group">
+        <input type="text" class="form-control" id="searchString" name="searchString" placeholder="Zoek..." value="@ViewBag.CurrentFilter" />
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Zoek</button>
+        </div>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+                    <th>
+                        @GetLabelOfField("Name", fieldLabels)
+                    </th>
+                    <th>
+                        @GetLabelOfField("NameNl", fieldLabels)
+                    </th>
+                    <th>
+                        @GetLabelOfField("NameFr", fieldLabels)
+                    </th>
+                    <th>
+                        @GetLabelOfField("NameGe", fieldLabels)
+                    </th>
+                    <th>
+                        @GetLabelOfField("UrlWikipedia", fieldLabels)
+                    </th>
+                    <th>
+                        @GetLabelOfField("UrlWikipediaNl", fieldLabels)
+                    </th>
+                    <th>
+                        @GetLabelOfField("UrlWikipediaFr", fieldLabels)
+                    </th>
+                    <th>
+                        @GetLabelOfField("UrlWikipediaGe", fieldLabels)
+                    </th>
+                    <th>
+                        @GetLabelOfField("Description", fieldLabels)
+                    </th>
+                    <th>
+                        @GetLabelOfField("DateFrom", fieldLabels)
+                    </th>
+                    <th>
+                        @GetLabelOfField("DateTo", fieldLabels)
+                    </th>
+                    <th>
+                        @GetLabelOfField("TypeOfArea", fieldLabels)
+                    </th>
+            <th></th>
+        </tr>
+        <tr>
+            <th>
+              <div class="form-group">
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="Name" name="Name" placeholder="" value="@ViewBag.Filter_Name" />
+                  </div>
+              </div>
+            </th>
+            <th>
+              <div class="form-group">
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="NameNl" name="NameNl" placeholder="" value="@ViewBag.Filter_NameNl" />
+                  </div>
+              </div>
+            </th>
+            <th>
+              <div class="form-group">
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="NameFr" name="NameFr" placeholder="" value="@ViewBag.Filter_NameFr" />
+                  </div>
+              </div>
+            </th>
+            <th>
+              <div class="form-group">
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="NameGe" name="NameGe" placeholder="" value="@ViewBag.Filter_NameGe" />
+                  </div>
+              </div>
+            </th>
+            <th>
+              <div class="form-group">
+                  <div class="input-group">
+                      <input type="text" class="form-control" disabled/>
+                  </div>
+              </div>
+            </th>
+            <th>
+              <div class="form-group">
+                  <div class="input-group">
+                      <input type="text" class="form-control" disabled/>
+                  </div>
+              </div>
+            </th>
+            <th>
+              <div class="form-group">
+                  <div class="input-group">
+                      <input type="text" class="form-control" disabled/>
+                  </div>
+              </div>
+            </th>
+            <th>
+              <div class="form-group">
+                  <div class="input-group">
+                      <input type="text" class="form-control" disabled/>
+                  </div>
+              </div>
+            </th>
+            <th>
+              <div class="form-group">
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="Description" name="Description" placeholder="" value="@ViewBag.Filter_Description" />
+                  </div>
+              </div>
+            </th>
+            <th>
+              <div class="form-group">
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="DateFrom" name="DateFrom" placeholder="" value="@ViewBag.Filter_DateFrom" />
+                  </div>
+              </div>
+            </th>
+            <th>
+              <div class="form-group">
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="DateTo" name="DateTo" placeholder="" value="@ViewBag.Filter_DateTo" />
+                  </div>
+              </div>
+            </th>
+            <th>
+              <div class="form-group">
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="TypeOfArea" name="TypeOfArea" placeholder="" value="@ViewBag.Filter_TypeOfArea" />
+                  </div>
+              </div>
+            </th>
+            <th>
+                <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Zoek</button>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameNl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameFr)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NameGe)
+            </td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.UrlWikipedia))
+                    {
+                        <a href=@Html.DisplayFor(modelItem => item.UrlWikipedia) target="_blank">link</a>
+                    }
+            </td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.UrlWikipediaNl))
+                    {
+                        <a href=@Html.DisplayFor(modelItem => item.UrlWikipediaNl) target="_blank">link</a>
+                    }
+            </td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.UrlWikipediaFr))
+                    {
+                        <a href=@Html.DisplayFor(modelItem => item.UrlWikipediaFr) target="_blank">link</a>
+                    }
+            </td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.UrlWikipediaGe))
+                    {
+                        <a href=@Html.DisplayFor(modelItem => item.UrlWikipediaGe) target="_blank">link</a>
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTo)
+            </td>
+            <td>
+                <a asp-controller="TypeOfAreas" asp-action="Details" asp-route-id="@item.TypeOfAreaId">
+                    @Html.DisplayFor(modelItem => item.TypeOfArea)
+                </a>
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}
+@functions {
+    string GetLabelOfField(string fieldName, List<DotNetCoreSqlDb.Models.FieldLabel> fieldLabels)
+    {
+        var matchingFieldLabel = fieldLabels.FirstOrDefault(fieldLabel => fieldLabel.FieldName == fieldName);
+
+        if (matchingFieldLabel != null)
+        {
+            return matchingFieldLabel.LabelOfField;
+        }
+
+        return fieldName;
+    }
+}
+
